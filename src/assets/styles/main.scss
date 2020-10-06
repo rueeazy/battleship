@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@200;400;700&display=swap');
+
+$bangers: 'Bangers', cursive;
+$main-font: 'Montserrat', sans-serif;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: $main-font;
+}
+
+html, body {
+    min-height: 100%;
+}
