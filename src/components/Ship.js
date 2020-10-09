@@ -2,17 +2,12 @@ import React, {useState} from 'react';
 
 const Ship = (props) => {
     const [length] = useState(props.length)
-    const [health, setHealth] = useState(props.length)
-
-    if(props.ship === props.type) {
-    }
-
 
     let currentShip;
 
     const dragStart = (e) => {
         const target = e.target
-        let shipLength = target.childNodes.length - 1
+        let shipLength = target.childNodes.length
         e.dataTransfer.setData('ship_id', target.id);
         e.dataTransfer.setData('specific_id', currentShip)
         e.dataTransfer.setData('ship_length', shipLength)
@@ -28,7 +23,7 @@ const Ship = (props) => {
 
     let divs = []
 
-    for(let i=0; i<=length; i++) {
+    for(let i=0; i<length; i++) {
         divs.push(<div key={props.type + '-' + i}id={props.type + '-' + i}></div>)
     }
 

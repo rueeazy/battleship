@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PlayerGrid from './PlayerGrid';
-import Grid from './Grid';
+import ComputerGrid from './ComputerGrid';
 import Ship from './Ship';
 
 const Gameboard = (props) => {
@@ -18,13 +18,14 @@ const Gameboard = (props) => {
 
     return (
         <div className="gameboard">
+            <div className="title">BattleShip</div>
             <div className="grid-container">
                 <PlayerGrid 
                 grid="player-grids grid-user"
                 isHorizontal={isHorizontal}
                 removeShipFromArmament={removeShipFromArmament}
                  />
-                <Grid 
+                <ComputerGrid 
                 grid="player-grids grid-cpu"
                 markHit={props.markHit}
                 />
@@ -32,8 +33,8 @@ const Gameboard = (props) => {
             <div className="hidden-info">
                 <button onClick={props.startGame} id="start" className="start">Start Game</button>
                 <button  onClick={rotate} id="rotate" className="rotate">Rotate Ships</button>
-                <h3 id="turn">Your Go</h3>
-                <h3 id="info"></h3>
+                <h3 id="turn"> </h3>
+                <h3 id="info">Drag & Place Your Ships</h3>
             </div>
             <div className="armament-container">
                 <Ship 
@@ -41,35 +42,30 @@ const Gameboard = (props) => {
                     id="ship-1"
                     length={5}
                     rotation={isHorizontal}
-                    ship={props.shipHit}
                  />
                 <Ship 
                     type="battleship"
                     id="ship-2"
                     length={4}
                     rotation={isHorizontal}
-                    ship={props.shipHit}
                 />
                 <Ship 
                     type="cruiser"
                     id="ship-3"
                     length={3}
                     rotation={isHorizontal}
-                    ship={props.shipHit}
                 />
                 <Ship 
                     type="submarine"
                     id="ship-4"
                     length={3}
                     rotation={isHorizontal}
-                    ship={props.shipHit}
                 />
                 <Ship 
                     type="destroyer"
                     id="ship-5"
                     length={2}
                     rotation={isHorizontal}
-                    ship={props.shipHit}
                 />
             </div>
         </div>

@@ -9,14 +9,14 @@ const generateCells = () => {
     return divs
 }
 
-const Grid = (props) => {
+const ComputerGrid = (props) => {
     useEffect(() => {
         setCount(count + 1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const [width] = useState(10)
-    const [cpuCells, setCpuCells] = useState(() => generateCells())
+    const [cpuCells] = useState(() => generateCells())
     const [count, setCount] = useState(0)
 
     let cpuDivs = cpuCells;
@@ -115,4 +115,4 @@ const Grid = (props) => {
     )
 }
 
-export default Grid
+export default ComputerGrid

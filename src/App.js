@@ -5,8 +5,7 @@ import './assets/styles/main.css';
 
 function App() {
   const [isGameOver, setGameOver] = useState(false)
-  const [humanTurn, setHumanTurn] = useState(true)
-  const [shipHit, setShipHit] = useState("")
+  const [humanTurn, setHumanTurn] = useState()
   const [cpuCarrierCount, setCpuCarrierCount] = useState(5)
   const [cpuBattleshipCount, setCpuBattleshipCount] = useState(4)
   const [cpuCruiserCount, setCpuCruiserCount] = useState(3)
@@ -22,22 +21,28 @@ function App() {
   const [health, setHealth] = useState(17)
 
   //Game Flow
-
   useEffect(() => {
-    startGame()
+    nextTurn()
   })
 
   const startGame = () => {
+    setHumanTurn(true)
+    document.querySelector('.armament-container').style.display = "none"
+    document.querySelector('#info').innerHTML = ""
+    document.querySelector('#start').style.display = "none"
+    document.querySelector('#rotate').style.display = "none"
+  }
+
+  const nextTurn = () => {
     let turnDisplay = document.querySelector('#turn')
     if(isGameOver) {
-      alert("game is over you win")
+      document.querySelector('#info').innerHTML = (health === 0) ? "Game Over. You Lose" : "Game Over. You Win"
       return
     } else if(humanTurn === true) {
-      turnDisplay.innerHTML = "Your Go";
+      turnDisplay.innerHTML = "Your Turn";
     } else if(humanTurn === false) {
-      turnDisplay.innerHTML = "Computers Go";
+      turnDisplay.innerHTML = "Computers Turn";
       setTimeout(computerGo, 1000)
-      setHumanTurn(!humanTurn)
     }
     if(cpuHealth === 0) {
       setGameOver(true)
@@ -45,42 +50,51 @@ function App() {
   }
 
   const computerGo = () => {
+    document.querySelector('#info').innerHTML = ""
     let userCells = document.querySelector('.grid-user').childNodes
     let random = Math.floor(Math.random() * 100)
-    if(userCells[random].style.backgroundColor === "black" || userCells[random].style.backgroundColor === "red") {
+    if(userCells[random].classList.contains('miss') || userCells[random].style.backgroundColor === "#F75263") {
       computerGo();
       return
     } else if(userCells[random].classList.length === 0) {
-      userCells[random].style.backgroundColor = "black"
+      userCells[random].style.backgroundColor = "rgb(199 186 186 / 80%)"
+      userCells[random].classList.add('miss')
     } else {
-      userCells[random].style.backgroundColor = "red";
+      userCells[random].style.backgroundColor = "#F75263";
       if(userCells[random].classList[1] === "carrier") {
+        setHealth(health - 1)
         setCarrierCount(carrierCount - 1)
         checkShipDestroyed(carrierCount, userCells[random].classList[1])
       } else if(userCells[random] === "battleship") {
+        setHealth(health - 1)
         setBattleshipCount(battleshipCount - 1)
         checkShipDestroyed(battleshipCount, userCells[random].classList[1])
       } else if(userCells[random] === "cruiser") {
+        setHealth(health - 1)
         setCruiserCount(cruiserCount - 1)
         checkShipDestroyed(cruiserCount, userCells[random].classList[1])
       } else if(userCells[random] === "submarine") {
+        setHealth(health - 1)
         setSubmarineCount(submarineCount - 1)
         checkShipDestroyed(submarineCount, userCells[random].classList[1])
       } else if(userCells[random] === "destroyer") {
+        setHealth(health - 1)
         setDestroyerCount(destroyerCount - 1)
         checkShipDestroyed(destroyerCount, userCells[random].classList[1])
       }
     }
+    setHumanTurn(!humanTurn)
   }
 
   const markHit = (e) => {
     let cell = e.target;
-    if (cell.style.backgroundColor === "black" || cell.style.backgroundColor === "red") {
+    if (cell.style.backgroundColor === "#F75263" || cell.classList.contains('miss')) {
       return
-    } else if(cell.classList[1] === undefined) {
-      cell.style.backgroundColor = "black"
+    } else if(cell.classList.length === 0) {
+      cell.style.backgroundColor = "rgb(199 186 186 / 80%)"
+      cell.classList.add('miss')
     } else {
-      cell.style.backgroundColor = "red"
+      cell.style.backgroundColor = "#F75263"
       if(cell.classList[1] === "carrier") {
         setCpuHealth(cpuHealth - 1)
         setCpuCarrierCount(cpuCarrierCount - 1)
@@ -118,7 +132,6 @@ function App() {
       <Gameboard
       startGame={startGame}
       markHit={markHit} 
-      shipHit={shipHit}
       />
     </div>
   );
